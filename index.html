@@ -9,26 +9,20 @@
 <title>نظام الحضور والغياب</title>
 <style>
   html, body { margin: 0; height: 100%; background: #e6f3f4; font-family: system-ui, "Segoe UI", Tahoma, sans-serif; }
-  #wait { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px; color: #0d5f67; text-align: center; padding: 16px; }
-  #wait a { color: #137d87; font-size: .9rem; }
+  #wait { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; color: #0d5f67; text-align: center; padding: 16px; }
   /* credentialless: يفتح النظام بدون حسابات Google المسجّلة في المتصفح،
      فلا يظهر خطأ "يتعذر فتح الملف" في كروم عند وجود أكثر من حساب */
-  iframe { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; opacity: 0; pointer-events: none; }
-  iframe.ready { opacity: 1; pointer-events: auto; }
+  iframe { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; opacity: 0; }
+  iframe.ready { opacity: 1; }
 </style>
 </head>
 <body>
-<div id="wait">
-  <div>جارٍ فتح نظام الحضور والغياب…</div>
-  <a id="direct" target="_top" rel="noopener">إذا لم يظهر النظام اضغط هنا</a>
-</div>
+<div id="wait">جارٍ فتح نظام الحضور والغياب…</div>
 <iframe credentialless title="نظام الحضور والغياب" allow="clipboard-write"></iframe>
 <script>
-  const APP = 'https://script.google.com/macros/s/AKfycbzsUaT9Y2fkIq37SrVLrX6EkMrhUFBm9YXGznF0RUxsh1G6QUMxw1Qgsi0Ywh4fyieO/exec';
   const frame = document.querySelector('iframe');
-  document.getElementById('direct').href = APP;
-  frame.onload = () => frame.classList.add('ready'); // حتى يبقى رابط البديل قابلاً للضغط أثناء التحميل
-  frame.src = APP; // يُضبط بعد credentialless حتى يُطبَّق من أول طلب
+  frame.onload = () => frame.classList.add('ready');
+  frame.src = 'https://script.google.com/macros/s/AKfycbzsUaT9Y2fkIq37SrVLrX6EkMrhUFBm9YXGznF0RUxsh1G6QUMxw1Qgsi0Ywh4fyieO/exec'; // يُضبط بعد credentialless حتى يُطبَّق من أول طلب
 </script>
 </body>
 </html>
