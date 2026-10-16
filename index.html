@@ -23,6 +23,20 @@
   const frame = document.querySelector('iframe');
   frame.onload = () => frame.classList.add('ready');
   frame.src = 'https://script.google.com/macros/s/AKfycbzsUaT9Y2fkIq37SrVLrX6EkMrhUFBm9YXGznF0RUxsh1G6QUMxw1Qgsi0Ywh4fyieO/exec'; // يُضبط بعد credentialless حتى يُطبَّق من أول طلب
+
+  // بقاء الجلسة ساعة عند تحديث الصفحة: تخزين الإطار credentialless يُمحى مع كل تحديث،
+  // فيطلب النظام من هذه الصفحة حفظ رمز الجلسة (sessionStorage: يُمحى بإغلاق التبويب).
+  addEventListener('message', e => {
+    const d = e.data;
+    if (!d || d.att !== 1 || !/^https:\/\/[a-z0-9-]+\.googleusercontent\.com$/.test(e.origin)) return;
+    let v = null;
+    try {
+      if (d.op === 'set' && typeof d.v === 'string' && d.v.length < 500) sessionStorage.setItem('att_sess', d.v);
+      else if (d.op === 'clear') sessionStorage.removeItem('att_sess');
+      else if (d.op === 'get') v = sessionStorage.getItem('att_sess');
+    } catch (_) {}
+    e.source.postMessage({ att: 1, id: d.id, v }, e.origin);
+  });
 </script>
 </body>
 </html>
